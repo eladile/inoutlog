@@ -7,14 +7,13 @@ import (
 
 var (
 	ErrMissingIn  = errors.New("missing in time")
-	ErrDoubleIn   = errors.New("double in time")
 	ErrMissingOut = errors.New("missing out time")
 )
 
 type Records struct {
 	Records []Record `json:"records"`
 	Tariff  int      `json:"tariff"`
-	Extra   int      `json:"Extra"`
+	Extra   int      `json:"extra"`
 }
 
 func NewRecords(tariff, extra int) *Records {
