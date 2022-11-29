@@ -1,6 +1,6 @@
 
 # inoutlog
-log working hours to json
+log working hours to json, and send the payment required via telgram bot.
 
 learn more about creating telegram bots in: https://core.telegram.org/api#bot-api
 
