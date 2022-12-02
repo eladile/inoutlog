@@ -29,21 +29,21 @@ func (r *Records) In(t time.Time) error {
 	return nil
 }
 
-func (r *Records) Out(t time.Time) (int, error) {
+func (r *Records) Out(t time.Time) (Record, error) {
 	if len(r.Records) == 0 {
-		return 0, ErrMissingIn
+		return Record{}, ErrMissingIn
 	}
 	last := r.Records[len(r.Records)-1]
 	if last.In != nil && last.Out != nil {
-		return 0, ErrMissingIn
+		return Record{}, ErrMissingIn
 	}
 	last.Out = &t
 	err := last.FillPayment(r.Tariff, r.Extra)
 	if err != nil {
-		return 0, err
+		return Record{}, err
 	}
 	r.Records[len(r.Records)-1] = last
-	return last.TotalPay, nil
+	return last, nil
 }
 
 type Record struct {

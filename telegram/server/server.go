@@ -71,12 +71,13 @@ func (s *Server) handleOut(id, text string) error {
 	if err != nil {
 		return err
 	}
-	pay, err := s.TimeLogger.Out(t)
+	record, err := s.TimeLogger.Out(t)
 	if err != nil {
 		_ = s.TelegramClient.SendMessage(id, fmt.Sprintf("Failed to log out: %s", err.Error()))
 		return err
 	}
-	return s.TelegramClient.SendMessage(id, fmt.Sprintf("Out time logged successfully: %s, pay %d", t.Format(timeLayout), pay))
+	durationForUser := record.TotalTime.Truncate(time.Minute).String()
+	return s.TelegramClient.SendMessage(id, fmt.Sprintf("Out time logged successfully: %s, worked: %s, pay: %d", t.Format(timeLayout), durationForUser, record.TotalPay))
 }
 
 func (s *Server) handleIn(id, text string) error {

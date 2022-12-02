@@ -10,7 +10,7 @@ import (
 
 type Logger interface {
 	In(time.Time) error
-	Out(time.Time) (int, error)
+	Out(time.Time) (records.Record, error)
 	GetAll() *records.Records
 }
 
@@ -46,14 +46,14 @@ func (l *logger) In(t time.Time) error {
 	return l.writer.Write(l.records)
 }
 
-func (l *logger) Out(t time.Time) (int, error) {
+func (l *logger) Out(t time.Time) (records.Record, error) {
 	l.recordsLock.Lock()
 	defer l.recordsLock.Unlock()
-	pay, err := l.records.Out(t)
+	record, err := l.records.Out(t)
 	if err != nil {
-		return 0, err
+		return records.Record{}, err
 	}
-	return pay, l.writer.Write(l.records)
+	return record, l.writer.Write(l.records)
 }
 
 func (l *logger) GetAll() *records.Records {
